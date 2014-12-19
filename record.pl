@@ -4,7 +4,9 @@ use v5.12;
 use strict;
 use warnings;
 
-use lib qw(./lib);
+use FindBin;
+use lib "$FindBin::Bin/lib";
+
 use Carp::Always;
 use Linux::Inotify2;
 use HLS::Playlist;
