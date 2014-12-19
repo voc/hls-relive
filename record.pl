@@ -53,6 +53,9 @@ sub update {
 			next;
 		}
 
+		$last_media_sequence = $event->{seq};
+		$out_pl->{complete} = 0;
+
 		say "fetching segment " . $event->{file};
 		my ($in_name) = $event->{file} =~ m!^.*?([^/]+)$!;
 		my $out_name = $out_pl->{next_media_sequence} . '.ts';
@@ -61,6 +64,16 @@ sub update {
 
 		$out_pl->add_segment($event->{duration}, $event->{title}, $out_name);
 	}
+
+	if($in_pl->{complete}){
+		$out_pl->{complete} = 1;
+		$out_pl->write("$out_base/index.m3u8");
+
+		exit 0;
+	}
+
+
+	$out_pl->write("$out_base/index.m3u8");
 }
 
 ################################################################################
@@ -79,6 +92,13 @@ if(-e "$out_base/index.m3u8") {
 	$out_pl = HLS::Playlist->new;
 }
 
+$SIG{INT} = sub {
+	$out_pl->{complete} = 1;
+	$out_pl->write("$out_base/index.m3u8");
+
+	exit 0;
+};
+
 my $inotify = Linux::Inotify2->new;
 $inotify->watch($in_base, IN_MOVED_TO, sub {
 		my ($e) = @_;
@@ -92,8 +112,11 @@ $inotify->watch($in_base, IN_MOVED_TO, sub {
 	});
 
 $in_pl = HLS::Playlist->from_file("$in_base/$in_m3u8");
+
 my ($min, $max) = $in_pl->media_sequence_range;
 $last_media_sequence = max($min, $max - 5);
+
+$out_pl->{target_duration} = max($out_pl->{target_duration} // 0, $in_pl->{target_duration});
 
 update;
 

@@ -163,7 +163,6 @@ sub media_sequence_range {
 sub media_sequence_max {
 	my ($self) = @_;
 
-	use Data::Dumper; say Dumper($self);
 	return ($self->media_sequence_range)[1];
 }
 
