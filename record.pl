@@ -102,6 +102,8 @@ $SIG{INT} = sub {
 	exit 0;
 };
 
+$SIG{TERM} = $SIG{INT};
+
 my $inotify = Linux::Inotify2->new;
 $inotify->watch($in_base, IN_MOVED_TO, sub {
 		my ($e) = @_;
