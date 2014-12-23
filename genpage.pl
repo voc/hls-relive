@@ -27,7 +27,7 @@ chdir($ARGV[2]) or die "chdir to topdir failed: $!";
 
 opendir(my $dh, ".");
 
-my $events;
+my $events = [];
 while(my $id = readdir $dh) {
 	next unless -d $id;
 	next unless $id =~ /^[0-9]+$/;
