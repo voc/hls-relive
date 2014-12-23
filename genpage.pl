@@ -7,6 +7,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
+use Carp;
 use Data::Dumper;
 use HLS::Playlist;
 use Fahrplan;
@@ -16,6 +17,33 @@ use File::Slurp;
 if(@ARGV != 3) {
 	say STDERR "usage: $0 schedule.xml media-events topdir";
 	exit 1;
+}
+
+sub age_span {
+	my ($dir) = @_;
+
+	if(not -d $dir) {
+		croak "$dir is not a directory";
+	}
+
+	my ($oldest, $newest);
+
+	opendir(my $dh, $dir);
+	while(my $f = readdir $dh) {
+		my $mtime = (stat("$dir/$f"))[9];
+
+		if(not defined $oldest or $mtime < $oldest) {
+			$oldest = $mtime;
+		}
+
+		if(not defined $newest or $newest < $mtime) {
+			$newest = $mtime;
+		}
+	}
+
+	closedir($dh);
+
+	return $newest - $oldest;
 }
 
 my $fahrplan = Fahrplan->new(location => $ARGV[0]);
@@ -52,6 +80,8 @@ while(my $id = readdir $dh) {
 		$event->{release_url} = $mevs[0]->{frontend_link};
 	}
 	
+	$event->{duration} = age_span($id);
+
 	push @$events, $event;
 }
 
