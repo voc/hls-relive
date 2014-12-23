@@ -46,6 +46,34 @@ sub age_span {
 	return $newest - $oldest;
 }
 
+sub extract_image {
+	my ($file, $out) = @_;
+
+	say("ffmpeg -loglevel error -i '$file' -an -r 1 -filter:v 'scale=sar*iw:ih, crop=ih*4/3:ih' -vframes 1 -f image2 -vcodec mjpeg -y '$out'");
+	system("ffmpeg -loglevel error -i '$file' -an -r 1 -filter:v 'scale=256:144' -vframes 1 -f image2 -vcodec mjpeg -y '$out'");
+}
+
+sub make_thumb {
+	my ($event) = @_;
+
+	my $dir = $event->{id};
+	my @segments = sort glob "$dir/*.ts";
+	say join ",", @segments;
+
+	return unless @segments;
+
+	my $thumb_segment;
+	if($event->{status} eq 'live') {
+		$thumb_segment = $segments[$#segments];
+	} elsif($event->{status} eq 'recorded') {
+		$thumb_segment = $segments[$#segments / 2];
+	}
+
+	my $thumb_path = "$dir/thumb.jpg";
+	extract_image($thumb_segment, $thumb_path);
+	$event->{thumbnail} = $thumb_path;
+}
+
 my $fahrplan = Fahrplan->new(location => $ARGV[0]);
 my $fp_events = $fahrplan->events;
 
@@ -66,7 +94,7 @@ while(my $id = readdir $dh) {
 	$event->{id} = $id;
 	$event->{room} = $fev->{room};
 	$event->{title} = $fev->{title};
-	
+
 	$event->{status} = "not_running"; # not_running, live, recorded, released
 	if(-e "$id/index.m3u8") {
 		my $pl = HLS::Playlist->from_file("$id/index.m3u8");
@@ -79,7 +107,11 @@ while(my $id = readdir $dh) {
 		$event->{status} = 'released';
 		$event->{release_url} = $mevs[0]->{frontend_link};
 	}
-	
+
+	if($event->{status} ne "not_running") {
+		make_thumb($event);
+	}
+
 	$event->{duration} = age_span($id);
 
 	push @$events, $event;
