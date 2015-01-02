@@ -30,6 +30,8 @@ sub age_span {
 
 	opendir(my $dh, $dir);
 	while(my $f = readdir $dh) {
+		next unless $f =~ /\.ts$/;
+
 		my $mtime = (stat("$dir/$f"))[9];
 
 		if(not defined $oldest or $mtime < $oldest) {
