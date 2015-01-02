@@ -13,6 +13,9 @@ use HLS::Playlist;
 use Fahrplan;
 use JSON;
 use File::Slurp;
+use Text::Template;
+
+binmode STDOUT, ":encoding(UTF-8)";
 
 if(@ARGV != 3) {
 	say STDERR "usage: $0 schedule.xml media-events topdir";
@@ -83,7 +86,7 @@ chdir($ARGV[2]) or die "chdir to topdir failed: $!";
 
 opendir(my $dh, ".");
 
-my $events = [];
+our $events = [];
 while(my $id = readdir $dh) {
 	next unless -d $id;
 	next unless $id =~ /^[0-9]+$/;
@@ -119,4 +122,7 @@ while(my $id = readdir $dh) {
 
 closedir($dh);
 
-write_file('index.json', encode_json($events));
+write_file('index.json', {binmode => ':encoding(UTF-8)'}, encode_json($events));
+
+my $template = Text::Template->new(TYPE => 'FILE', SOURCE => "$FindBin::Bin/template.tmpl");
+write_file('index.html', {binmode => ':encoding(UTF-8)'}, $template->fill_in());
