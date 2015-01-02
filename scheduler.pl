@@ -19,8 +19,8 @@ use IPC::Run;
 my $start_time = time;
 my $fudge;
 
-my $prerecord = 0;
-my $postrecord = 0;
+my $prerecord = 900;
+my $postrecord = 900;
 my @recorder = qw(wrapper.sh);
 
 my $stream_map = {
