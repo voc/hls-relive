@@ -156,7 +156,7 @@ while(@events) {
 	say "-"x80;
 	
 	# start recordings
-	while(DateTime->compare($now, $next->{start}) >= 0) {
+	while($next and DateTime->compare($now, $next->{start}) >= 0) {
 		my $event = shift @events;
 		say "Event ", $event->{title}, " begins";
 
@@ -165,7 +165,7 @@ while(@events) {
 		$next = $events[0];
 	}
 
-	#stop recordings
+	# stop recordings
 	foreach my $id (keys %recordings) {
 		my $recording = $recordings{$id};
 
