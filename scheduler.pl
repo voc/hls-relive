@@ -21,7 +21,7 @@ my $fudge;
 
 my $prerecord = 900;
 my $postrecord = 900;
-my @recorder = qw(wrapper.sh);
+my @recorder = qw(./wrapper.sh);
 
 my $stream_map = {
 	"Saal 1" => "s1",
