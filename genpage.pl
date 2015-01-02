@@ -51,7 +51,6 @@ sub age_span {
 sub extract_image {
 	my ($file, $out) = @_;
 
-	say("ffmpeg -loglevel error -i '$file' -an -r 1 -filter:v 'scale=sar*iw:ih, crop=ih*4/3:ih' -vframes 1 -f image2 -vcodec mjpeg -y '$out'");
 	system("ffmpeg -loglevel error -i '$file' -an -r 1 -filter:v 'scale=256:144' -vframes 1 -f image2 -vcodec mjpeg -y '$out'");
 }
 
@@ -60,7 +59,6 @@ sub make_thumb {
 
 	my $dir = $event->{id};
 	my @segments = sort glob "$dir/*.ts";
-	say join ",", @segments;
 
 	return unless @segments;
 
