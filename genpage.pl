@@ -18,7 +18,7 @@ use Text::Template;
 binmode STDOUT, ":encoding(UTF-8)";
 
 if(@ARGV != 3) {
-	say STDERR "usage: $0 schedule.xml media-events topdir";
+	say STDERR "usage: $0 schedule.xml released topdir";
 	exit 1;
 }
 
@@ -80,7 +80,7 @@ sub make_thumb {
 my $fahrplan = Fahrplan->new(location => $ARGV[0]);
 my $fp_events = $fahrplan->events;
 
-my $media_events = decode_json(read_file($ARGV[1]))->{events};
+my $released = decode_json(read_file($ARGV[1]));
 
 chdir($ARGV[2]) or die "chdir to topdir failed: $!";
 
@@ -106,9 +106,10 @@ while(my $id = readdir $dh) {
 		$event->{playlist} = "$id/index.m3u8";
 	}
 
-	if(my @mevs = grep { $_->{guid} eq $fev->{guid} } @$media_events) {
+	my $frontend_url = $released->{$fev->{guid} // ""};
+	if($frontend_url) {
 		$event->{status} = 'released';
-		$event->{release_url} = $mevs[0]->{frontend_link};
+		$event->{release_url} = $frontend_url;
 	}
 
 	if($event->{status} ne "not_running") {
