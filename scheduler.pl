@@ -26,8 +26,8 @@ my @recorder = qw(wrapper.sh);
 my $stream_map = {
 	"Saal 1" => "s1",
 	"Saal 2" => "s2",
-	"Saal 6" => "s3",
-	"Saal G" => "s4",
+	"Saal G" => "s3",
+	"Saal 6" => "s4",
 };
 
 my $strp = DateTime::Format::Strptime->new(
