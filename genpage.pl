@@ -68,7 +68,7 @@ sub make_thumb {
 	my $thumb_segment;
 	if($event->{status} eq 'live') {
 		$thumb_segment = $segments[$#segments];
-	} elsif($event->{status} eq 'recorded') {
+	} elsif($event->{status} eq 'recorded' or $event->{status} eq 'released') {
 		$thumb_segment = $segments[$#segments / 2];
 	}
 
