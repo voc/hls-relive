@@ -10,13 +10,13 @@ kill_children() {
 trap kill_children EXIT
 
 
-if [ ! -d "/srv/www/hls/$ID" ]
+if [ ! -d "/srv/nginx/htdocs/relive/$ID" ]
 then
-	mkdir "/srv/www/hls/$ID"
+	mkdir "/srv/nginx/htdocs/relive/$ID"
 fi
 
 while true
 do
-	perl ./record.pl /tmp/hls "${STREAM}_native_sd.m3u8" /srv/www/hls/"$ID"
+	perl ./record.pl /tmp/hls "${STREAM}_native_sd.m3u8" /srv/nginx/htdocs/relive/"$ID"
 	sleep 1;
 done
