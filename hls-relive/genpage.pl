@@ -123,7 +123,7 @@ while(my $id = readdir $dh) {
 
 closedir($dh);
 
-write_file('index.json', {binmode => ':encoding(UTF-8)'}, encode_json($events));
+write_file('index.json', encode_json($events));
 
 my $template = Text::Template->new(TYPE => 'FILE', SOURCE => "$FindBin::Bin/template.tmpl");
 write_file('index.html', {binmode => ':encoding(UTF-8)'}, $template->fill_in());
