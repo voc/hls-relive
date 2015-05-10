@@ -15,6 +15,9 @@ use JSON;
 use File::Slurp;
 use Text::Template;
 
+#my $url_prefix = "http://cdn.c3voc.de/releases/relive/";
+my $url_prefix = "http://live.dus.c3voc.de/releases/relive/";
+
 binmode STDOUT, ":encoding(UTF-8)";
 
 if(@ARGV != 3) {
@@ -74,7 +77,7 @@ sub make_thumb {
 
 	my $thumb_path = "$dir/thumb.jpg";
 	extract_image($thumb_segment, $thumb_path);
-	$event->{thumbnail} = $thumb_path;
+	$event->{thumbnail} = $url_prefix . $thumb_path;
 }
 
 my $fahrplan = Fahrplan->new(location => $ARGV[0]);
@@ -103,7 +106,7 @@ while(my $id = readdir $dh) {
 		my $pl = HLS::Playlist->from_file("$id/index.m3u8");
 		$event->{status} = $pl->{complete} ? 'recorded' : 'live';
 
-		$event->{playlist} = "$id/index.m3u8";
+		$event->{playlist} = $url_prefix . "$id/index.m3u8";
 	}
 
 	my $frontend_url = $released->{$fev->{guid} // ""};
