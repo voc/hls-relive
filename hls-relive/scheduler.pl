@@ -3,6 +3,7 @@
 use v5.12;
 use strict;
 use warnings;
+use utf8;
 
 use Data::Dumper;
 
