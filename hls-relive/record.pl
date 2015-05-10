@@ -10,6 +10,7 @@ use lib "$FindBin::Bin/lib";
 use Carp::Always;
 use Linux::Inotify2;
 use HLS::Playlist;
+use File::Copy;
 use Data::Dumper;
 use List::Util qw(max);
 
@@ -62,7 +63,7 @@ sub update {
 		my ($in_name) = $event->{file} =~ m!^.*?([^/]+)$!;
 		my $out_name = $out_pl->{next_media_sequence} . '.ts';
 
-		link "$in_base/$in_name", "$out_base/$out_name" or die "link failed: $!";
+		copy("$in_base/$in_name", "$out_base/$out_name") or die "link failed: $!";
 
 		$out_pl->add_segment($event->{duration}, $event->{title}, $out_name);
 	}
