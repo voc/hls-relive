@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd $(dirname $(realpath $0))/../
+
 source ./cfg
 
 wget -q -O data/schedule.xml.tmp "$FAHRPLAN_URL"

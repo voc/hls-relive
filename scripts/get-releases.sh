@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd $(dirname $(realpath $0))/../
+
 source ./cfg
 
 wget -q -O data/media-events.tmp http://api.media.ccc.de/public/conferences/"$MEDIA_CONFERENCE_ID"
