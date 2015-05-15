@@ -10,13 +10,21 @@ use lib "$FindBin::Bin/lib";
 use Carp;
 use Data::Dumper;
 use HLS::Playlist;
+use Config;
 use Fahrplan;
 use JSON;
 use File::Slurp;
 use Text::Template;
 
-#my $url_prefix = "http://cdn.c3voc.de/releases/relive/";
-my $url_prefix = "http://live.dus.c3voc.de/releases/relive/";
+my $url_prefix = "http://cdn.c3voc.de/releases/relive/";
+
+Config::read_config '../cfg', sub {
+	my ($k, $v) = @_;
+
+	if($k eq 'GENPAGE_URL_PREFIX') {
+		$url_prefix = $v;
+	}
+};
 
 binmode STDOUT, ":encoding(UTF-8)";
 
