@@ -18,6 +18,8 @@ use DateTime::Format::DateParse;
 use DateTime::Format::Strptime;
 use IPC::Run;
 
+chdir($FindBin::RealBin);
+
 my $start_time = time;
 my $fudge;
 
