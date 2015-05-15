@@ -11,6 +11,7 @@ use FindBin;
 use lib "$FindBin::Bin/lib";
 
 use Fahrplan;
+use Config;
 
 use DateTime;
 use DateTime::Format::DateParse;
@@ -24,13 +25,6 @@ my $prerecord = 900;
 my $postrecord = 900;
 my @recorder = qw(./wrapper.sh);
 
-my $stream_map = {
-	"Saal 1" => "s1",
-	"Saal 2" => "s2",
-	"Saal G" => "s3",
-	"Saal 6" => "s4",
-};
-
 my $strp = DateTime::Format::Strptime->new(
 	pattern => '%F %T %Z',
 );
@@ -38,6 +32,26 @@ my $strp = DateTime::Format::Strptime->new(
 my $zone = DateTime::TimeZone->new( name => 'local' );
 
 binmode STDOUT, ':encoding(UTF-8)';
+
+my $stream_map;
+Config::read_config '../cfg', sub {
+	my ($k, $v) = @_;
+
+	if($k eq 'PRERECORD') {
+		$prerecord = $v;
+	} elsif($k eq 'POSTRECORD') {
+		$postrecord = $v;
+	}
+
+	if($k =~ /^STREAM_(.*)/) {
+		$stream_map->{$v} = $1;
+	}
+});
+
+say "Populated stream map as follows:";
+foreach my $k (keys %$stream_map) {
+	say "$k -> $stream_map->{$k}";
+}
 
 sub now {
 	my $now;
