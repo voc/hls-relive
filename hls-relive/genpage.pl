@@ -17,6 +17,8 @@ use File::Slurp;
 use Text::Template;
 
 my $url_prefix = "http://cdn.c3voc.de/releases/relive/";
+my $schedule_path = '../data/schedule.xml';
+my $releases_path = '../data/releases';
 
 Config::read_config '../cfg', sub {
 	my ($k, $v) = @_;
@@ -88,10 +90,10 @@ sub make_thumb {
 	$event->{thumbnail} = $url_prefix . $thumb_path;
 }
 
-my $fahrplan = Fahrplan->new(location => $ARGV[0]);
+my $fahrplan = Fahrplan->new(location => $schedule_path);
 my $fp_events = $fahrplan->events;
 
-my $released = decode_json(read_file($ARGV[1]));
+my $released = decode_json(read_file($releases_path));
 
 chdir($ARGV[2]) or die "chdir to topdir failed: $!";
 
