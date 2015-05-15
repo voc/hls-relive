@@ -19,21 +19,19 @@ use Text::Template;
 my $url_prefix = "http://cdn.c3voc.de/releases/relive/";
 my $schedule_path = '../data/schedule.xml';
 my $releases_path = '../data/releases';
+my $workdir = '/srv/releases/relive/';
 
 Config::read_config '../cfg', sub {
 	my ($k, $v) = @_;
 
 	if($k eq 'GENPAGE_URL_PREFIX') {
 		$url_prefix = $v;
+	} elsif($k eq 'RELIVE_DIR') {
+		$workdir = $v;
 	}
 };
 
 binmode STDOUT, ":encoding(UTF-8)";
-
-if(@ARGV != 3) {
-	say STDERR "usage: $0 schedule.xml released topdir";
-	exit 1;
-}
 
 sub age_span {
 	my ($dir) = @_;
@@ -95,7 +93,7 @@ my $fp_events = $fahrplan->events;
 
 my $released = decode_json(read_file($releases_path));
 
-chdir($ARGV[2]) or die "chdir to topdir failed: $!";
+chdir($workdir) or die "chdir to workdir ($workdir) failed: $!";
 
 opendir(my $dh, ".");
 

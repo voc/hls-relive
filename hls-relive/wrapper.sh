@@ -9,14 +9,15 @@ kill_children() {
 
 trap kill_children EXIT
 
+source ../cfg
 
-if [ ! -d "/srv/releases/relive/$ID" ]
+if [ ! -d "$RELIVE_DIR/$ID" ]
 then
-	mkdir "/srv/releases/relive/$ID"
+	mkdir "$RELIVE_DIR/$ID"
 fi
 
 while true
 do
-	perl ./record.pl /tmp/hls "${STREAM}_native_sd.m3u8" /srv/releases/relive/"$ID"
+	perl ./record.pl $HLS_DIR "${STREAM}_native_sd.m3u8" $RELIVE_DIR/"$ID"
 	sleep 1;
 done

@@ -1,3 +1,12 @@
+## global settings
+# Set the output directory of relive
+
+RELIVE_DIR=/srv/releases/relive
+
+# Set the HLS source directory
+
+HLS_DIR=/tmp/hls
+
 ## configuration for fahrplan-fetcher and released-checker
 # These settings obviously have no defaults and must always be set
 
@@ -29,4 +38,3 @@ STREAM_s4="Saal 6"
 # Default: http://cdn.c3voc.de/releases/relive
 
 GENPAGE_URL_PREFIX=http://live.dus.c3voc.de/releases/relive/
-
