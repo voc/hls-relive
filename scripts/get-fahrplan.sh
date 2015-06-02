@@ -1,8 +1,10 @@
 #!/bin/bash
 
-cd ~
+cd $(dirname $(realpath $0))/../
 
-wget -q -O data/schedule.xml.tmp https://events.ccc.de/congress/2014/Fahrplan/schedule.xml
+source ./cfg
+
+wget -q -O data/schedule.xml.tmp "$FAHRPLAN_URL"
 if [ -s data/schedule.xml.tmp ]
 then
 	mv data/schedule.xml.tmp data/schedule.xml

@@ -1,8 +1,10 @@
 #!/bin/bash
 
-cd ~
+cd $(dirname $(realpath $0))/../
 
-wget -q -O data/media-events.tmp http://api.media.ccc.de/public/conferences/54
+source ./cfg
+
+wget -q -O data/media-events.tmp http://api.media.ccc.de/public/conferences/"$MEDIA_CONFERENCE_ID"
 if [ -s data/media-events.tmp ]
 then
 	mv data/media-events.tmp data/media-events

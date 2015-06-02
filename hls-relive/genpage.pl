@@ -10,20 +10,28 @@ use lib "$FindBin::Bin/lib";
 use Carp;
 use Data::Dumper;
 use HLS::Playlist;
+use Relive::Config;
 use Fahrplan;
 use JSON;
 use File::Slurp;
 use Text::Template;
 
-#my $url_prefix = "http://cdn.c3voc.de/releases/relive/";
-my $url_prefix = "http://live.dus.c3voc.de/releases/relive/";
+my $url_prefix = "http://cdn.c3voc.de/releases/relive/";
+my $schedule_path = '../data/schedule.xml';
+my $releases_path = '../data/releases';
+my $workdir = '/srv/releases/relive/';
+
+Relive::Config::read_config "$FindBin::RealBin/../cfg", sub {
+	my ($k, $v) = @_;
+
+	if($k eq 'GENPAGE_URL_PREFIX') {
+		$url_prefix = $v;
+	} elsif($k eq 'RELIVE_DIR') {
+		$workdir = $v;
+	}
+};
 
 binmode STDOUT, ":encoding(UTF-8)";
-
-if(@ARGV != 3) {
-	say STDERR "usage: $0 schedule.xml released topdir";
-	exit 1;
-}
 
 sub age_span {
 	my ($dir) = @_;
@@ -80,12 +88,12 @@ sub make_thumb {
 	$event->{thumbnail} = $url_prefix . $thumb_path;
 }
 
-my $fahrplan = Fahrplan->new(location => $ARGV[0]);
+my $fahrplan = Fahrplan->new(location => $schedule_path);
 my $fp_events = $fahrplan->events;
 
-my $released = decode_json(read_file($ARGV[1]));
+my $released = decode_json(read_file($releases_path));
 
-chdir($ARGV[2]) or die "chdir to topdir failed: $!";
+chdir($workdir) or die "chdir to workdir ($workdir) failed: $!";
 
 opendir(my $dh, ".");
 
