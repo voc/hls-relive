@@ -10,7 +10,7 @@ use lib "$FindBin::Bin/lib";
 use Carp;
 use Data::Dumper;
 use HLS::Playlist;
-use Config;
+use Relive::Config;
 use Fahrplan;
 use JSON;
 use File::Slurp;
@@ -21,7 +21,7 @@ my $schedule_path = '../data/schedule.xml';
 my $releases_path = '../data/releases';
 my $workdir = '/srv/releases/relive/';
 
-Config::read_config '$FindBin::RealBin/../cfg', sub {
+Relive::Config::read_config "$FindBin::RealBin/../cfg", sub {
 	my ($k, $v) = @_;
 
 	if($k eq 'GENPAGE_URL_PREFIX') {

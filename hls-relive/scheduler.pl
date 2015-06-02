@@ -11,7 +11,7 @@ use FindBin;
 use lib "$FindBin::Bin/lib";
 
 use Fahrplan;
-use Config;
+use Relive::Config;
 
 use DateTime;
 use DateTime::Format::DateParse;
@@ -36,7 +36,7 @@ my $zone = DateTime::TimeZone->new( name => 'local' );
 binmode STDOUT, ':encoding(UTF-8)';
 
 my $stream_map;
-Config::read_config '../cfg', sub {
+Relive::Config::read_config '../cfg', sub {
 	my ($k, $v) = @_;
 
 	if($k eq 'PRERECORD') {
@@ -48,7 +48,7 @@ Config::read_config '../cfg', sub {
 	if($k =~ /^STREAM_(.*)/) {
 		$stream_map->{$v} = $1;
 	}
-});
+};
 
 say "Populated stream map as follows:";
 foreach my $k (keys %$stream_map) {

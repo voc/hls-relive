@@ -1,4 +1,4 @@
-package Config;
+package Relive::Config;
 
 use v5.12;
 use strict;
