@@ -16,7 +16,7 @@ use JSON;
 use File::Slurp;
 use Text::Template;
 
-my $url_prefix = "http://cdn.c3voc.de/releases/relive/";
+my $url_prefix = "//cdn.c3voc.de/releases/relive/";
 my $schedule_path = '../data/schedule.xml';
 my $releases_path = '../data/releases';
 my $workdir = '/srv/releases/relive/';

@@ -35,6 +35,6 @@ STREAM_s4="Saal 6"
 ## configuration for genpage
 # Overwrite the base URL used for the links in the generated index.json.
 #
-# Default: http://cdn.c3voc.de/releases/relive
+# Default: //cdn.c3voc.de/releases/relive
 
-GENPAGE_URL_PREFIX=http://live.dus.c3voc.de/releases/relive/
+GENPAGE_URL_PREFIX=//live.dus.c3voc.de/releases/relive/
