@@ -88,6 +88,23 @@ sub make_thumb {
 	$event->{thumbnail} = $url_prefix . $thumb_path;
 }
 
+sub remux_mp4 {
+	my ($event) = @_;
+
+	my $dir = $event->{id};
+
+	my $in = "$dir/index.m3u8";
+	my $out = "$dir/muxed.mp4"
+
+	if(-f $out) {
+		return;
+	}
+
+	system("ffmpeg -loglevel error -i '$in' -c:a copy -c:v copy -bsf:a aac_adtstoasc -movflags faststart -y '$out'");
+
+	$event->{mp4} = $url_prefix . $out;
+}
+
 my $fahrplan = Fahrplan->new(location => $schedule_path);
 my $fp_events = $fahrplan->events;
 
@@ -125,6 +142,10 @@ while(my $id = readdir $dh) {
 
 	if($event->{status} ne "not_running") {
 		make_thumb($event);
+	}
+
+	if($event->{status} eq "recorded") {
+		remux_mp4($event);
 	}
 
 	$event->{duration} = age_span($id);
