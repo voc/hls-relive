@@ -94,7 +94,7 @@ sub remux_mp4 {
 	my $dir = $event->{id};
 
 	my $in = "$dir/index.m3u8";
-	my $out = "$dir/muxed.mp4"
+	my $out = "$dir/muxed.mp4";
 
 	if(-f $out) {
 		return;
