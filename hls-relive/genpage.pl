@@ -104,11 +104,9 @@ sub remux_mp4 {
 	my $in = "$dir/index.m3u8";
 	my $out = "$dir/muxed.mp4";
 
-	if(-f $out and !(mtime($in) > mtime($out))) {
-		return;
+	if(not -f $out or (mtime($in) > mtime($out))) {
+		system("ffmpeg -loglevel error -i '$in' -c:a copy -c:v copy -bsf:a aac_adtstoasc -movflags faststart -y '$out'");
 	}
-
-	system("ffmpeg -loglevel error -i '$in' -c:a copy -c:v copy -bsf:a aac_adtstoasc -movflags faststart -y '$out'");
 
 	$event->{mp4} = $url_prefix . $out;
 }
