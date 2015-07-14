@@ -88,6 +88,14 @@ sub make_thumb {
 	$event->{thumbnail} = $url_prefix . $thumb_path;
 }
 
+sub mtime {
+	my ($file) = @_;
+
+	my @stat = stat($file);
+
+	return $stat[9];
+}
+
 sub remux_mp4 {
 	my ($event) = @_;
 
@@ -96,7 +104,7 @@ sub remux_mp4 {
 	my $in = "$dir/index.m3u8";
 	my $out = "$dir/muxed.mp4";
 
-	if(-f $out) {
+	if(-f $out and !(mtime($in) > mtime($out))) {
 		return;
 	}
 
