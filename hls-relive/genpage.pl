@@ -14,7 +14,6 @@ use Relive::Config;
 use Fahrplan;
 use JSON;
 use File::Slurp;
-use Text::Template;
 
 my $url_prefix = "//cdn.c3voc.de/releases/relive/";
 my $schedule_path = '../data/schedule.xml';
@@ -162,6 +161,3 @@ while(my $id = readdir $dh) {
 closedir($dh);
 
 write_file('index.json', encode_json($events));
-
-my $template = Text::Template->new(TYPE => 'FILE', SOURCE => "$FindBin::Bin/template.tmpl");
-write_file('index.html', {binmode => ':encoding(UTF-8)'}, $template->fill_in());
