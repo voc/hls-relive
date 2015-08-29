@@ -38,6 +38,8 @@ foreach my $event (@$events) {
 	my $url = $event->{frontend_link};
 	next unless defined $url;
 
+	# check berlin, as this is the slave mirror and thus will always be the
+	# last to receive the update
 	$url =~ s!//media.ccc.de!//berlin.media.ccc.de!g;
 
 	print "checking $url... ";
