@@ -82,8 +82,8 @@ object looks like this:
 ### check_released.pl
 
 `check_released.pl` is a helper used by the `get-releases.sh` script. It
-ensures that only events which have a generated frontend page are marked
-as *released*.
+ensures that only events which have at least one recording on media.ccc.de are
+marked as *released*.
 
 ### Cron jobs
 
