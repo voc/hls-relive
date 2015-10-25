@@ -7,7 +7,7 @@ use warnings;
 sub read_config {
 	my ($path, $cb) = @_;
 
-	open(my $fh, '<', $path) or die "opening config failed: $!";
+	open(my $fh, '<:encoding(UTF-8)', $path) or die "opening config failed: $!";
 
 	while(my $line = <$fh>) {
 		chomp($line);
