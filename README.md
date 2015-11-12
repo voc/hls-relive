@@ -97,9 +97,11 @@ There are three cron jobs:
 Configuration
 -------------
 
-All scripts get their configuration from the `cfg` file in the root of
-the git repository. See `cfg.example` for an example. The config file
-contains comments explaining the various options.
+All scripts take the union of `global_config` in the root of the git
+repository as their configuration. This configuration is extended by a
+project-specific configuration in the `configs` subdirectory. See the
+`.example` files in the respective directories. These files also contain
+comments explaining the various options.
 
 Setting up for a new conference
 -------------------------------
@@ -107,8 +109,5 @@ Setting up for a new conference
 The following steps are necessary to set up ReLive for a new conference:
 
   - update the configuration file appropriately
-  - clear out the `data` directory (strictly speaking, only removing the
-    `releases` file is necessary)
-  - clear out the `RELIVE_DIR`, but keep `crossdomain.xml`
-  - call `scheduler.pl` like this: `cd /home/relive/hls-relive; perl scheduler.pl ../data/schedule.xml`.
+  - call `scheduler.pl` like this: `cd /home/relive/hls-relive; RELIVE_PROJECT=projectname perl scheduler.pl ../data/schedule.xml`.
     You'll probably want to do that in a screen session.

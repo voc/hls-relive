@@ -5,23 +5,27 @@ use strict;
 use warnings;
 
 sub read_config {
-	my ($path, $cb) = @_;
+	my @paths = @_;
+	my $chash;
 
-	open(my $fh, '<:encoding(UTF-8)', $path) or die "opening config failed: $!";
+	foreach my $path (@paths) {
+		open(my $fh, '<:encoding(UTF-8)', $path) or die "opening config at '$path' failed: $!";
 
-	while(my $line = <$fh>) {
-		chomp($line);
+		while(my $line = <$fh>) {
+			chomp($line);
 
-		next if $line =~ /^#/;
-		next if $line !~ /=/;
+			next if $line =~ /^#/;
+			next if $line !~ /=/;
 
-		my ($k, $v) = split /=/, $line;
+			my ($k, $v) = split /=/, $line;
 
-		($v) = $v =~ /^"?(.*?)"?$/; #FIXME: do proper unescaping here
+			($v) = $v =~ /^"?(.*?)"?$/; #FIXME: do proper unescaping here
 
-		$cb->($k, $v);
-
+			$chash->{$k} = $v;
+		}
 	}
+
+	return $chash;
 }
 
 1;

@@ -1,11 +1,13 @@
 #!/bin/bash
 
-cd $(dirname $(realpath $0))/../
+RELIVE_REPO=$(dirname $(realpath $0))/../
+eval $(perl "${RELIVE_REPO}/hls-relive/export-config.pl")
 
-source ./cfg
+DATA_DIR="${RELIVE_REPO}/data/${RELIVE_PROJECT}"
+[ -d "$DATA_DIR" ] || mkdir "$DATA_DIR"
 
-wget --no-check-certificate -q -O data/schedule.xml.tmp "$FAHRPLAN_URL"
-if [ -s data/schedule.xml.tmp ]
+wget --no-check-certificate -q -O "${DATA_DIR}/schedule.xml.tmp" "$FAHRPLAN_URL"
+if [ -s "${DATA_DIR}/schedule.xml.tmp" ]
 then
-	mv data/schedule.xml.tmp data/schedule.xml
+	mv "${DATA_DIR}/schedule.xml.tmp" "${DATA_DIR}/schedule.xml"
 fi

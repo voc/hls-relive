@@ -9,15 +9,17 @@ kill_children() {
 
 trap kill_children EXIT
 
-source ../cfg
+eval $(perl export-config.pl)
 
-if [ ! -d "$RELIVE_DIR/$ID" ]
+RECORDING_DIR="${RELIVE_OUTDIR}/${RELIVE_PROJECT}/${ID}"
+
+if [ ! -d $RECORDING_DIR ]
 then
-	mkdir "$RELIVE_DIR/$ID"
+	mkdir -p $RECORDING_DIR
 fi
 
 while true
 do
-	perl ./record.pl $HLS_DIR "${STREAM}_native_sd.m3u8" $RELIVE_DIR/"$ID"
-	sleep 1;
+	perl ./record.pl $HLS_DIR "${STREAM}_native_sd.m3u8" $RECORDING_DIR
+	sleep 1
 done

@@ -1,11 +1,11 @@
-## global settings
-# Set the output directory of relive
-
-RELIVE_DIR=/srv/releases/relive
-
-# Set the HLS source directory
-
-HLS_DIR=/tmp/hls
+###############################################################################
+# project-specific configuration
+#
+# name this file after the project name
+#
+# all settings from the global configuration file can be overwritten in
+# here, too
+###############################################################################
 
 ## configuration for fahrplan-fetcher and released-checker
 # These settings obviously have no defaults and must always be set
@@ -31,10 +31,3 @@ STREAM_s4="Saal 6"
 
 #PRERECORD=900
 #POSTRECORD=900
-
-## configuration for genpage
-# Overwrite the base URL used for the links in the generated index.json.
-#
-# Default: //cdn.c3voc.de/releases/relive
-
-GENPAGE_URL_PREFIX=//live.dus.c3voc.de/releases/relive/

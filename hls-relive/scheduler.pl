@@ -18,13 +18,18 @@ use DateTime::Format::DateParse;
 use DateTime::Format::Strptime;
 use IPC::Run;
 
+my $project = $ENV{RELIVE_PROJECT};
+if(not defined $project) {
+	say STDERR "RELIVE_PROJECT environment variable must be defined";
+	exit 1;
+}
+
 chdir($FindBin::RealBin);
+my $repo = $ENV{RELIVE_REPO} // "$FindBin::RealBin/../";
 
 my $start_time = time;
 my $fudge;
 
-my $prerecord = 900;
-my $postrecord = 900;
 my @recorder = qw(./wrapper.sh);
 
 my $strp = DateTime::Format::Strptime->new(
@@ -35,20 +40,20 @@ my $zone = DateTime::TimeZone->new( name => 'local' );
 
 binmode STDOUT, ':encoding(UTF-8)';
 
+my $config = Relive::Config::read_config(
+	"${repo}/global_config",
+	"${repo}/configs/${project}"
+);
+
+my $prerecord = $config->{PRERECORD} // 900;
+my $postrecord = $config->{POSTRECORD} // 900;
+
 my $stream_map;
-Relive::Config::read_config '../cfg', sub {
-	my ($k, $v) = @_;
-
-	if($k eq 'PRERECORD') {
-		$prerecord = $v;
-	} elsif($k eq 'POSTRECORD') {
-		$postrecord = $v;
-	}
-
+foreach my $k (keys %$config) {
 	if($k =~ /^STREAM_(.*)/) {
-		$stream_map->{$v} = $1;
+		$stream_map->{$config->{$k}} = $1;
 	}
-};
+}
 
 say "Populated stream map as follows:";
 foreach my $k (keys %$stream_map) {

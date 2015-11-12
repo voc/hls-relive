@@ -15,20 +15,31 @@ use Fahrplan;
 use JSON;
 use File::Slurp;
 
-my $url_prefix = "//cdn.c3voc.de/releases/relive/";
-my $schedule_path = '../data/schedule.xml';
-my $releases_path = '../data/releases';
-my $workdir = '/srv/releases/relive/';
+my $project = $ENV{RELIVE_PROJECT};
+if(not defined $project) {
+	say STDERR "RELIVE_PROJECT environment variable must be defined";
+	exit 1;
+}
 
-Relive::Config::read_config "$FindBin::RealBin/../cfg", sub {
-	my ($k, $v) = @_;
+my $repo = $ENV{RELIVE_REPO} // "$FindBin::RealBin/../";
 
-	if($k eq 'GENPAGE_URL_PREFIX') {
-		$url_prefix = $v;
-	} elsif($k eq 'RELIVE_DIR') {
-		$workdir = $v;
+my $schedule_path = "${repo}/data/${project}/schedule.xml";
+my $releases_path = "${repo}/data/${project}/releases";
+
+my $config = Relive::Config::read_config (
+	"${repo}/global_config",
+	"${repo}/configs/${project}"
+);
+
+foreach my $k (qw(GENPAGE_URL_PREFIX RELIVE_OUTDIR)) {
+	if(not defined $config->{$k}) {
+		say STDERR "mandatory option $k not given in config";
+		exit 1;
 	}
-};
+}
+
+my $url_prefix = $config->{GENPAGE_URL_PREFIX} . '/' . $project . '/';
+my $outdir = $config->{RELIVE_OUTDIR} . '/' . $project . '/';
 
 binmode STDOUT, ":encoding(UTF-8)";
 
@@ -115,7 +126,7 @@ my $fp_events = $fahrplan->events;
 
 my $released = decode_json(read_file($releases_path));
 
-chdir($workdir) or die "chdir to workdir ($workdir) failed: $!";
+chdir($outdir) or die "chdir to outdir ($outdir) failed: $!";
 
 opendir(my $dh, ".");
 

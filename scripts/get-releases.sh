@@ -1,13 +1,15 @@
 #!/bin/bash
 
-cd $(dirname $(realpath $0))/../
+RELIVE_REPO=$(dirname $(realpath $0))/../
+eval $(perl "${RELIVE_REPO}/hls-relive/export-config.pl")
 
-source ./cfg
+DATA_DIR="${RELIVE_REPO}/data/${RELIVE_PROJECT}"
+[ -d "$DATA_DIR" ] || mkdir "$DATA_DIR"
 
-wget -q -O data/media-events.tmp http://api.media.ccc.de/public/conferences/"$MEDIA_CONFERENCE_ID"
-if [ -s data/media-events.tmp ]
+wget -q -O "${DATA_DIR}/media-events.tmp" http://api.media.ccc.de/public/conferences/"$MEDIA_CONFERENCE_ID"
+if [ -s "${DATA_DIR}/media-events.tmp" ]
 then
-	mv data/media-events.tmp data/media-events
+	mv "${DATA_DIR}/media-events.tmp" "${DATA_DIR}/media-events"
 fi
 
-perl hls-relive/check_released.pl data/media-events data/releases 2>/dev/null
+perl "${RELIVE_REPO}/hls-relive/check_released.pl" "${DATA_DIR}/media-events" "${DATA_DIR}/releases" 2>/dev/null
