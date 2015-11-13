@@ -124,7 +124,12 @@ sub remux_mp4 {
 my $fahrplan = Fahrplan->new(location => $schedule_path);
 my $fp_events = $fahrplan->events;
 
-my $released = decode_json(read_file($releases_path));
+my $released;
+if(-f $releases_path) {
+	$released = decode_json(read_file($releases_path));
+} else {
+	$released = {};
+}
 
 chdir($outdir) or die "chdir to outdir ($outdir) failed: $!";
 
