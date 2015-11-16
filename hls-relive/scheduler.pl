@@ -80,6 +80,13 @@ if(scalar @ARGV > 1) {
 sub read_events {
 	my $fp = Fahrplan->new(location => $ARGV[0]);
 
+	# sanity check: are we trying to record an empty/non-existent room?
+	foreach my $room (keys %$stream_map) {
+		if(grep({$_->{room} eq $room} @{$fp->events}) == 0) {
+			say "Warning: room '$room' has no events in the schedule";
+		}
+	}
+
 	my $now = now;
 
 	# find all events
