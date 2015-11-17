@@ -131,6 +131,10 @@ if(-f $releases_path) {
 	$released = {};
 }
 
+if(not -e $outdir) {
+	mkdir($outdir) or die "mkdir of outdir ($outdir) failed :$!";
+}
+
 chdir($outdir) or die "chdir to outdir ($outdir) failed: $!";
 
 opendir(my $dh, ".");
