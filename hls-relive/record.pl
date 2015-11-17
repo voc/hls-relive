@@ -33,6 +33,12 @@ my $last_media_sequence;
 # functions
 ################################################################################
 
+sub link_or_copy {
+	my ($from, $to) = @_;
+
+	return link($from, $to) or copy($from, $to);
+}
+
 sub update {
 	say "got an update";
 
@@ -63,7 +69,7 @@ sub update {
 		my ($in_name) = $event->{file} =~ m!^.*?([^/]+)$!;
 		my $out_name = $out_pl->{next_media_sequence} . '.ts';
 
-		copy("$in_base/$in_name", "$out_base/$out_name") or die "link failed: $!";
+		link_or_copy("$in_base/$in_name", "$out_base/$out_name") or die "link failed: $!";
 
 		$out_pl->add_segment($event->{duration}, $event->{title}, $out_name);
 	}
