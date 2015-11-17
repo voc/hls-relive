@@ -151,7 +151,7 @@ $SIG{'TERM'} = sub {
 
 $SIG{'INT'} = $SIG{'TERM'};
 
-while(@events) {
+while(@events or keys(%recordings)) {
 	my $now = now;
 
 	say "="x80;
@@ -168,7 +168,11 @@ while(@events) {
 	}
 
 	my $next = $events[0];
-	printf "Next event is: %s (starts %s)\n", $next->{title}, $strp->format_datetime($next->{start});
+	if(defined $next) {
+		printf "Next event is: %s (starts %s)\n", $next->{title}, $strp->format_datetime($next->{start});
+	} else {
+		say "No next event. Waiting for recorders to finish.";
+	}
 	
 	say "-"x80;
 
