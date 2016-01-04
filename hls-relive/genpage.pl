@@ -69,6 +69,10 @@ sub age_span {
 
 	closedir($dh);
 
+	if(not defined $newest or not defined $oldest) {
+		return 0;
+	}
+
 	return $newest - $oldest;
 }
 
