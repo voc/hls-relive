@@ -36,7 +36,7 @@ my $last_media_sequence;
 sub link_or_copy {
 	my ($from, $to) = @_;
 
-	return link($from, $to) or copy($from, $to);
+	return link($from, $to) || copy($from, $to);
 }
 
 sub update {
