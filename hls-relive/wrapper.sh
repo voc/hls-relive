@@ -18,8 +18,10 @@ then
 	mkdir -p $RECORDING_DIR
 fi
 
+RELIVE_RESOLUTION=${RELIVE_RESOLUTION:-sd}
+
 while true
 do
-	perl ./record.pl $HLS_DIR "${STREAM}_native_sd.m3u8" $RECORDING_DIR
+	perl ./record.pl $HLS_DIR "${STREAM}_native_${RELIVE_RESOLUTION}.m3u8" $RECORDING_DIR
 	sleep 1
 done
