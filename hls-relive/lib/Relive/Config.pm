@@ -17,7 +17,7 @@ sub read_config {
 			next if $line =~ /^#/;
 			next if $line !~ /=/;
 
-			my ($k, $v) = split /=/, $line;
+			my ($k, $v) = $line =~ /^([^=]*)=(.*)/;
 
 			($v) = $v =~ /^"?(.*?)"?$/; #FIXME: do proper unescaping here
 
