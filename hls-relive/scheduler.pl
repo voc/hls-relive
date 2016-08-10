@@ -103,7 +103,7 @@ sub read_events {
 		}
 		sort {DateTime->compare($a->{start}, $b->{start})}
 		grep {DateTime->compare(now, $_->{end}) <= 0}
-		grep {$_->{"recording.optout"} eq "false"}
+		grep {$_->{"recording.optout"} ne "true"}
 		grep {exists $stream_map->{$_->{room}}} @{$fp->events};
 
 	#say Dumper([@events]);
