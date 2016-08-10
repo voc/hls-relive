@@ -109,5 +109,5 @@ Setting up for a new conference
 The following steps are necessary to set up ReLive for a new conference:
 
   - update the configuration file appropriately
-  - call `scheduler.pl` like this: `cd /home/relive/hls-relive; RELIVE_PROJECT=projectname perl scheduler.pl ../data/schedule.xml`.
+  - launch the recording scheduler: `./launcher.sh projectname`
     You'll probably want to do that in a screen session.
