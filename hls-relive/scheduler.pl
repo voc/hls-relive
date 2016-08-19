@@ -56,7 +56,7 @@ foreach my $k (keys %$config) {
 }
 
 say "Populated stream map as follows:";
-foreach my $k (keys %$stream_map) {
+foreach my $k (sort keys %$stream_map) {
 	say "$k -> $stream_map->{$k}";
 }
 
