@@ -95,7 +95,7 @@ sub read_events {
 	#  - that have not ended yet
 	#  - sorted from earliest to latest
 	#  and add recording offsets
-	my @events = 
+	my @events =
 		map {
 			$_->{start}->subtract(seconds => $prerecord);
 			$_->{end}->add(seconds => $postrecord);
@@ -173,7 +173,7 @@ while(@events or keys(%recordings)) {
 	} else {
 		say "No next event. Waiting for recorders to finish.";
 	}
-	
+
 	say "-"x80;
 
 	say "Currently recording: ";
@@ -187,7 +187,7 @@ while(@events or keys(%recordings)) {
 	}
 
 	say "-"x80;
-	
+
 	# start recordings
 	while($next and DateTime->compare($now, $next->{start}) >= 0) {
 		my $event = shift @events;
