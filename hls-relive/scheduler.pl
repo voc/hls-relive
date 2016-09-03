@@ -77,8 +77,12 @@ if(scalar @ARGV > 1) {
 	$fudge = shift @ARGV;
 }
 
+my $schedule_path = $ARGV[0];
+
 sub read_events {
-	my $fp = Fahrplan->new(location => $ARGV[0]);
+	my ($path) = @_;
+
+	my $fp = Fahrplan->new(location => $path);
 
 	# sanity check: are we trying to record an empty/non-existent room?
 	foreach my $room (keys %$stream_map) {
@@ -112,11 +116,14 @@ sub read_events {
 	return @events;
 }
 
-my @events = read_events;
-my $refresh_events = 0;
-$SIG{'HUP'} = sub {
-	$refresh_events = 1;
-};
+sub mtime {
+	my ($f) = @_;
+
+	return (stat($f))[9];
+}
+
+my @events = read_events($schedule_path);
+my $schedule_ts = mtime($schedule_path);
 
 my %recordings;
 sub start_recording {
@@ -157,14 +164,15 @@ while(@events or keys(%recordings)) {
 	say "="x80;
 	say "Now: ", $strp->format_datetime($now);
 
-	if($refresh_events) {
+	my $cur_mtime = mtime($schedule_path);
+	if($schedule_ts < $cur_mtime) {
 		say "Refreshing events";
-		@events = read_events;
+		@events = read_events($schedule_path);
 
 		# remove all the events we are already recording
 		@events = grep { not exists $recordings{$_->{id}} } @events;
 
-		$refresh_events = 0;
+		$schedule_ts = $cur_mtime;
 	}
 
 	my $next = $events[0];
