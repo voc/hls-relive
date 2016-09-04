@@ -91,7 +91,7 @@ sub update {
 
 while(not -e "$in_base/$in_m3u8") {
 	say 'input playlist does not exist, waiting';
-	sleep 1;
+	sleep 5;
 }
 
 if(-e "$out_base/index.m3u8") {
