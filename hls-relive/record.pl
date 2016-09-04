@@ -21,6 +21,8 @@ if(@ARGV != 3) {
 
 my ($in_base, $in_m3u8, $out_base) = @ARGV;
 
+my $in_m3u8_path = "$in_base/$in_m3u8";
+
 ################################################################################
 # global variables
 ################################################################################
@@ -89,8 +91,8 @@ sub update {
 # main
 ################################################################################
 
-while(not -e "$in_base/$in_m3u8") {
-	say 'input playlist does not exist, waiting';
+while(not -e $in_m3u8_path) {
+	say "input playlist '$in_m3u8_path' does not exist, waiting";
 	sleep 5;
 }
 
@@ -123,7 +125,7 @@ $inotify->watch($in_base, IN_MOVED_TO, sub {
 		update;
 	});
 
-$in_pl = HLS::Playlist->from_file("$in_base/$in_m3u8");
+$in_pl = HLS::Playlist->from_file($in_m3u8_path);
 
 my ($min, $max) = $in_pl->media_sequence_range;
 $last_media_sequence = max($min, $max - 5);
