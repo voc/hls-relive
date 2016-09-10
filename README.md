@@ -31,9 +31,10 @@ The m3u8 in the output directory will be named `index.m3u8`.
 processes as dictated by the conference schedule. See below for
 configuration details.
 
-When sent a `SIGHUP`, it will reload its schedule, spawning or killing
-recording subprocesses as necessary. Running recording subprocesses
-which are still valid w.r.t. the new schedule remain untouched.
+When the modification time of the schedule file changes, it will reload the
+schedule, spawning or killing recording subprocesses as necessary. Running
+recording subprocesses which are still valid w.r.t. the new schedule remain
+untouched.
 
 When sent a `SIGINT` or `SIGTERM` it shuts down all recording
 subprocesses and then terminates itself.
