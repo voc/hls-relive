@@ -164,15 +164,17 @@ while(@events or keys(%recordings)) {
 	say "="x80;
 	say "Now: ", $strp->format_datetime($now);
 
-	my $cur_mtime = mtime($schedule_path);
-	if($schedule_ts < $cur_mtime) {
-		say "Refreshing events";
-		@events = read_events($schedule_path);
+	if(-e $schedule_path) {
+		my $cur_mtime = mtime($schedule_path);
+		if($schedule_ts < $cur_mtime) {
+			say "Refreshing events";
+			@events = read_events($schedule_path);
 
-		# remove all the events we are already recording
-		@events = grep { not exists $recordings{$_->{id}} } @events;
+			# remove all the events we are already recording
+			@events = grep { not exists $recordings{$_->{id}} } @events;
 
-		$schedule_ts = $cur_mtime;
+			$schedule_ts = $cur_mtime;
+		}
 	}
 
 	my $next = $events[0];
