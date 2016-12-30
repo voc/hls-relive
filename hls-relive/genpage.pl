@@ -151,6 +151,8 @@ while(my $id = readdir $dh) {
 	my $event;
 
 	my $fev = (grep { $_->{id} == $id } @$fp_events)[0];
+	next unless $fev;
+
 	$event->{id} = $id;
 	$event->{room} = $fev->{room};
 	$event->{title} = $fev->{title};
