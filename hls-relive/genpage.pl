@@ -156,6 +156,8 @@ while(my $id = readdir $dh) {
 	$event->{id} = $id;
 	$event->{room} = $fev->{room};
 	$event->{title} = $fev->{title};
+	$event->{start} = $fev->{start}->epoch;
+	$event->{mtime} = (stat("$id"))[9];
 
 	$event->{status} = "not_running"; # not_running, live, recorded, released
 	if(-e "$id/index.m3u8") {
