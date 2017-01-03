@@ -76,6 +76,14 @@ sub age_span {
 	return $newest - $oldest;
 }
 
+sub mtime {
+	my ($file) = @_;
+
+	my @stat = stat($file);
+
+	return $stat[9];
+}
+
 sub extract_image {
 	my ($file, $out) = @_;
 
@@ -86,8 +94,13 @@ sub make_thumb {
 	my ($event) = @_;
 
 	my $dir = $event->{id};
-	my @segments = sort glob "$dir/*.ts";
+	my $thumb_path = "$dir/thumb.jpg";
 
+	if (-f "$dir/thumb.jpg" and (mtime("$dir/index.m3u8") < mtime("$dir/thumb.jpg"))) {
+		return;
+	}
+
+	my @segments = sort glob "$dir/*.ts";
 	return unless @segments;
 
 	my $thumb_segment;
@@ -97,17 +110,8 @@ sub make_thumb {
 		$thumb_segment = $segments[$#segments / 2];
 	}
 
-	my $thumb_path = "$dir/thumb.jpg";
 	extract_image($thumb_segment, $thumb_path);
 	$event->{thumbnail} = $url_prefix . $thumb_path;
-}
-
-sub mtime {
-	my ($file) = @_;
-
-	my @stat = stat($file);
-
-	return $stat[9];
 }
 
 sub remux_mp4 {
