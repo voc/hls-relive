@@ -125,6 +125,29 @@ sub remux_mp4 {
 	$event->{mp4} = $url_prefix . $out;
 }
 
+sub make_sprites {
+	my ($event) = @_;
+	my $sprites_interval = 15;
+
+	my $dir = $event->{id};
+
+	my $in = "$dir/index.m3u8";
+	my $out = "$dir/sprites.jpg";
+
+	if(not -f $out or (mtime($in) > mtime($out))) {
+		system("${repo}/scripts/gen-sprites.sh " . $sprites_interval * 25 . " \"${in}\" \"${out}\"");
+	}
+
+	if(-f "${out}.meta") {
+		my $meta = decode_json(read_file("${out}.meta"));
+
+		$event->{sprites}{interval} = $sprites_interval;
+		$event->{sprites}{url} = $url_prefix . $out;
+		$event->{sprites}{n} = $meta->{n};
+		$event->{sprites}{cols} = $meta->{cols};
+	}
+}
+
 my $fahrplan = Fahrplan->new(location => $schedule_path);
 my $fp_events = $fahrplan->events;
 
@@ -179,6 +202,10 @@ while(my $id = readdir $dh) {
 
 	if($event->{status} eq "recorded") {
 		remux_mp4($event);
+
+		if($config->{SCRUB_THUMBS}) {
+			make_sprites($event);
+		}
 	}
 
 	$event->{duration} = age_span($id);

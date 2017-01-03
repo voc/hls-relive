@@ -13,6 +13,15 @@ HLS_DIR=/srv/nginx/hls
 
 RELIVE_RESOLUTION=sd
 
+# Generate scrubbing thumbnails for the relive player
+#
+# Note that this a computationally expensive operation and also creates a
+# dependency on the "montage" tool from ImageMagick.
+#
+# Default: off
+
+SCRUB_THUMBS=0
+
 ## configuration for genpage
 # Overwrite the base URL used for the links in the generated index.json.
 #
