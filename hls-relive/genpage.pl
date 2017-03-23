@@ -96,6 +96,8 @@ sub make_thumb {
 	my $dir = $event->{id};
 	my $thumb_path = "$dir/thumb.jpg";
 
+	$event->{thumbnail} = $url_prefix . $thumb_path;
+
 	if (-f "$dir/thumb.jpg" and (mtime("$dir/index.m3u8") < mtime("$dir/thumb.jpg"))) {
 		return;
 	}
@@ -111,7 +113,6 @@ sub make_thumb {
 	}
 
 	extract_image($thumb_segment, $thumb_path);
-	$event->{thumbnail} = $url_prefix . $thumb_path;
 }
 
 sub remux_mp4 {
