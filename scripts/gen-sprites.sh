@@ -22,7 +22,7 @@ cleanup() {
 
 trap cleanup EXIT
 
-ffmpeg -loglevel error -i "$input" -vf select="not(mod(n\\,${interval})),scale=-1:${height}" -vsync passthrough "${tmp}/%06d.png"
+ffmpeg -loglevel error -i "$input" -vf select="not(mod(n\\,${interval})),scale=dar*${height}:${height}" -vsync passthrough "${tmp}/%06d.png"
 
 nsprites=$(ls -1 ${tmp} | wc -l)
 cols=$(echo "sqrt($nsprites)" | bc)
