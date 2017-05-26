@@ -15,6 +15,10 @@
 FAHRPLAN_URL=https://events.ccc.de/congress/2014/Fahrplan/schedule.xml
 MEDIA_CONFERENCE_ID=54
 
+# Optional, for fixing broken schedules. This amount of seconds is added to all
+# times in the schedule. Negative values are allowed.
+# FAHRPLAN_OFFSET=7200
+
 ## configuration for recording scheduler / recorder
 #
 # This maps Fahrplan room names to streams. For example, "Saal 1"

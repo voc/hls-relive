@@ -82,7 +82,7 @@ my $schedule_path = $ARGV[0];
 sub read_events {
 	my ($path) = @_;
 
-	my $fp = Fahrplan->new(location => $path);
+	my $fp = Fahrplan->new(location => $path, offset => ($config->{FAHRPLAN_OFFSET} // 0));
 
 	# sanity check: are we trying to record an empty/non-existent room?
 	foreach my $room (keys %$stream_map) {
