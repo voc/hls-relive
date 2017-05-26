@@ -77,6 +77,10 @@ sub new {
 			}
 
 			$event->{start} = DateTime::Format::DateParse->parse_datetime(get_child($ev, "date"));
+			if ($params{offset}) {
+				$event->{start}->add(seconds => $params{offset})
+			}
+
 			$event->{duration} = parse_duration(get_child($ev, "duration"));
 			$event->{end} = $event->{start} + $event->{duration};
 
