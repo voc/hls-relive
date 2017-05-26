@@ -8,7 +8,9 @@
 ###############################################################################
 
 ## configuration for fahrplan-fetcher and released-checker
-# These settings obviously have no defaults and must always be set
+# These settings obviously have no defaults and must always be set if the
+# Fahrplan download / released-check is desired. If they're not set, those
+# features are disabled.
 
 FAHRPLAN_URL=https://events.ccc.de/congress/2014/Fahrplan/schedule.xml
 MEDIA_CONFERENCE_ID=54
