@@ -4,6 +4,8 @@ use v5.12;
 use strict;
 use warnings;
 
+use Carp;
+
 use Data::Dumper;
 use DateTime::Format::Strptime;
 
@@ -39,11 +41,16 @@ sub events {
 }
 
 sub new {
-	my ($class, @inspec) = @_;
+	my ($class, %params) = @_;
 
-	my $dom = XML::LibXML->load_xml(
-		@inspec
-	);
+	my $dom;
+	if (defined $params{location}) {
+		$dom = XML::LibXML->load_xml(location => $params{location});
+	} elsif (defined $params{string}) {
+		$dom = XML::LibXML->load_xml(string => $params{string});
+	} else {
+		croak "need to give Fahrplan XML either via string or location";
+	}
 
 	my $root = $dom->documentElement;
 	my $fahrplan;
