@@ -9,9 +9,9 @@ HLS_DIR=/srv/nginx/hls
 
 # Set the resolution to be recorded
 #
-# Default: sd
+# Default: hd
 
-RELIVE_RESOLUTION=sd
+# RELIVE_RESOLUTION=sd
 
 # Generate scrubbing thumbnails for the relive player
 #
