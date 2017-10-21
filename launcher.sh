@@ -19,4 +19,12 @@ fi
 export RELIVE_PROJECT="$project"
 
 cd hls-relive
+
+eval $(perl export-config.pl)
+if [[ ! -r "$HLS_DIR" || ! -x "$HLS_DIR" ]]
+then
+	echo "$HLS_DIR is not accessible"
+	exit 1
+fi
+
 exec perl scheduler.pl "../data/${project}/schedule.xml"
