@@ -1,0 +1,37 @@
+###############################################################################
+# project-specific configuration
+#
+# name this file after the project name
+#
+# all settings from the global configuration file can be overwritten in
+# here, too
+###############################################################################
+
+## configuration for fahrplan-fetcher and released-checker
+# These settings obviously have no defaults and must always be set if the
+# Fahrplan download / released-check is desired. If they're not set, those
+# features are disabled.
+
+FAHRPLAN_URL={{ schedule }}
+MEDIA_CONFERENCE_ID={{ slug }}
+
+# Optional, for fixing broken schedules. This amount of seconds is added to all
+# times in the schedule. Negative values are allowed.
+# FAHRPLAN_OFFSET=7200
+
+## configuration for recording scheduler / recorder
+#
+# This maps Fahrplan room names to streams. For example, "Saal 1"
+# corresponds to stream "s1". Beware that the part of the key after the
+# underscore is case sensitive!
+{% for room in groups[0].rooms %}
+STREAM_{{ room.stream }}="{{ room.schedulename }}" {% endfor %}
+
+# Configure how many seconds before/after a talk should be recorded to
+# allow for slack.
+#
+# Default: 900 seconds
+
+#PRERECORD=900
+#POSTRECORD=900
+SCRUB_THUMBS=1
