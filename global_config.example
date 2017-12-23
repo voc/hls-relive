@@ -3,7 +3,7 @@
 
 RELIVE_OUTDIR=/srv/nginx/relive
 
-# Set the HLS source directory
+# Set the HLS source directory for the hls recording mode
 
 HLS_DIR=/srv/nginx/hls
 
@@ -12,6 +12,22 @@ HLS_DIR=/srv/nginx/hls
 # Default: hd
 
 # RELIVE_RESOLUTION=sd
+
+# Set the recording mode
+#
+# Can be hls or icedist:
+#
+#  - "hls" uses a directory containing an HLS playlist and the corresponding
+#    segments as a recording source.
+#
+#  - "icedist" connects to an icecast server
+#
+# Default: hls
+
+# RELIVE_RECORDING_MODE=icedist
+
+# Icecast baseurl to use when using the icedist mode
+# ICEDIST_URL=http://127.0.0.1:7999
 
 # Generate scrubbing thumbnails for the relive player
 #
