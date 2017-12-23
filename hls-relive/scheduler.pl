@@ -28,7 +28,7 @@ chdir($FindBin::RealBin);
 my $repo = $ENV{RELIVE_REPO} // "$FindBin::RealBin/../";
 
 my $start_time = time;
-my $fudge;
+my $fudge = $ENV{RELIVE_FUDGE_DATE};
 
 my @recorder = qw(./wrapper.sh);
 
