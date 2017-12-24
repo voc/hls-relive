@@ -4,7 +4,17 @@ ID="$1"
 STREAM="$2"
 
 kill_children() {
-	pkill -P $$
+	pkill -INT -P $$
+
+	# ffmpeg is not especially reliable in correctly writing an EXT-X-ENDLIST tag
+	# when dying. Fix this up ourselves.
+
+	local playlist="${RECORDING_DIR}/index.m3u8"
+
+	if [ -f "$playlist" ] && ! egrep -q '^#EXT-X-ENDLIST' "${RECORDING_DIR}/index.m3u8"
+	then
+		echo '#EXT-X-ENDLIST' >> "${RECORDING_DIR}/index.m3u8"
+	fi
 }
 
 trap kill_children EXIT
