@@ -44,19 +44,25 @@ if(@ARGV != 2) {
 
 my $events = decode_json(read_file($ARGV[0]))->{events};
 
-my $released_events = {};
+my $old_released_events = {};
 if(-f $ARGV[1]) {
-	$released_events = decode_json(read_file($ARGV[1]));
+	$old_released_events = decode_json(read_file($ARGV[1]));
 }
 
+my $released_events = {};
 foreach my $event (@$events) {
-	next if $released_events->{$event->{guid}};
+	my $guid = $event->{guid};
+
+	if($old_released_events->{$guid}) {
+		$released_events->{$guid} = $old_released_events->{$guid};
+		next;
+	}
 
 	print "checking $event->{slug}... ";
 
 	my $recordings = count_recordings($event);
 	if($recordings > 0) {
-		$released_events->{$event->{guid}} = $event->{frontend_link};
+		$released_events->{$guid} = $event->{frontend_link};
 		say "ok ($recordings)";
 	} else {
 		say "not ok";
