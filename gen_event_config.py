@@ -8,7 +8,7 @@ import jinja2
 
 
 # request currently active conferences from streams API
-r = requests.get('https://streaming.media.ccc.de/streams/v2.json')
+r = requests.get('https://streaming.media.ccc.de/streams/v2.json?forceopen=yess')
 #r = requests.get('http://localhost:8000/streams/v2.json')
 
 if r.status_code != 200:
@@ -47,7 +47,7 @@ if 'schedule' not in conference or conference['schedule'] is None:
 
 
 # generate config and write it to a file
-templateLoader = jinja2.FileSystemLoader(searchpath=".")
+templateLoader = jinja2.FileSystemLoader(searchpath="configs")
 templateEnv = jinja2.Environment(loader=templateLoader)
 template = templateEnv.get_template("cfg.example.j2")
 

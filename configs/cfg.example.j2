@@ -25,7 +25,7 @@ MEDIA_CONFERENCE_ID={{ slug }}
 # corresponds to stream "s1". Beware that the part of the key after the
 # underscore is case sensitive!
 {% for room in groups[0].rooms %}
-STREAM_{{ room.stream }}="{{ room.schedulename }}" {% endfor %}
+STREAM_{{ room.stream }}="{{ room.schedulename }}"{% endfor %}
 
 # Configure how many seconds before/after a talk should be recorded to
 # allow for slack.
