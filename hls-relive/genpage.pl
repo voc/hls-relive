@@ -182,6 +182,7 @@ while(my $id = readdir $dh) {
 	next unless $fev;
 
 	$event->{id} = $id;
+	$event->{guid} = $fev->{guid};
 	$event->{room} = $fev->{room};
 	$event->{title} = $fev->{title};
 	$event->{start} = $fev->{start}->epoch;
