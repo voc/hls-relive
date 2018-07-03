@@ -227,7 +227,7 @@ while(my $id = readdir $dh) {
 
 closedir($dh);
 
-write_file('index.json.tmp', encode_json($events));
+write_file('index.json.tmp', JSON->new->utf8->pretty->canonical->encode($events));
 if ($latest_mtime > 0) {
 	utime($latest_mtime, $latest_mtime, 'index.json.tmp');
 }
