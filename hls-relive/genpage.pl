@@ -171,6 +171,8 @@ chdir($outdir) or die "chdir to outdir ($outdir) failed: $!";
 
 opendir(my $dh, ".");
 
+my $latest_mtime = -1;
+
 our $events = [];
 while(my $id = readdir $dh) {
 	next unless -d $id;
@@ -187,6 +189,10 @@ while(my $id = readdir $dh) {
 	$event->{title} = $fev->{title};
 	$event->{start} = $fev->{start}->epoch;
 	$event->{mtime} = (stat("$id"))[9];
+
+	if ($event->{mtime} > $latest_mtime) {
+		$latest_mtime = $event->{mtime};
+	}
 
 	$event->{status} = "not_running"; # not_running, live, recorded, released
 	if(-e "$id/index.m3u8") {
@@ -221,4 +227,9 @@ while(my $id = readdir $dh) {
 
 closedir($dh);
 
-write_file('index.json', encode_json($events));
+write_file('index.json.tmp', encode_json($events));
+if ($latest_mtime > 0) {
+	utime($latest_mtime, $latest_mtime, 'index.json.tmp');
+}
+
+rename('index.json.tmp', 'index.json');
