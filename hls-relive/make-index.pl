@@ -51,8 +51,8 @@ while(my $name = readdir $dh) {
 
 	my $project_config = Relive::Config::read_config($config_path);
 	my $media_id = $project_config->{MEDIA_CONFERENCE_ID};
-	if (defined $media_id and $media_id =~ /[0-9]+/) {
-		$project->{media_conference_id} = $project_config->{MEDIA_CONFERENCE_ID} + 0;
+	if (defined $media_id and $media_id ne "") {
+		$project->{media_conference_id} = $project_config->{MEDIA_CONFERENCE_ID};
 	}
 
 	push @$projects, $project;
