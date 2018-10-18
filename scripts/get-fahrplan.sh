@@ -11,7 +11,7 @@ then
        exit 0
 fi
 
-wget --no-check-certificate -q -O "${DATA_DIR}/schedule.xml.tmp" "$FAHRPLAN_URL"
+wget --timeout=10 --no-check-certificate -q -O "${DATA_DIR}/schedule.xml.tmp" "$FAHRPLAN_URL"
 if [ -s "${DATA_DIR}/schedule.xml.tmp" ]
 then
 	mv "${DATA_DIR}/schedule.xml.tmp" "${DATA_DIR}/schedule.xml"
