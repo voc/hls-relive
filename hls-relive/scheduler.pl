@@ -116,6 +116,13 @@ sub read_events {
 	return @events;
 }
 
+sub read_acronym {
+	my ($path) = @_;
+
+	my $fp = Fahrplan->new(location => $path);
+	return $fp->{acronym};
+}
+
 sub mtime {
 	my ($f) = @_;
 
@@ -123,7 +130,21 @@ sub mtime {
 }
 
 my @events = read_events($schedule_path);
+my $acronym = read_acronym($schedule_path);
 my $schedule_ts = mtime($schedule_path);
+
+if (defined($acronym) and $acronym ne $project) {
+	my $nag_string = sprintf "I realize that having to distinguish between '%s' and '%s' is confusing, but still want that. I am very sorry.",
+                                 $acronym, $project;
+
+	unless (exists($config->{APOLOGY}) and $config->{APOLOGY} eq $nag_string) {
+		say "The configured project name is '$project', while the schedule acronym is '$acronym'. Refusing to work under these unsatisfactory conditions.";
+		say "";
+		say "If you really need to continue, set the config variable 'APOLOGY' to the following value:\n ", $nag_string;
+
+		exit 1;
+	}
+}
 
 my %recordings;
 sub start_recording {
