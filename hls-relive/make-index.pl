@@ -22,7 +22,7 @@ foreach my $k (qw(GENPAGE_URL_PREFIX RELIVE_OUTDIR)) {
 	}
 }
 
-my $url_prefix = $config->{GENPAGE_URL_PREFIX};
+my $url_prefix = $config->{GENPAGE_MASTER_URL_PREFIX};
 my $outdir = $config->{RELIVE_OUTDIR};
 
 binmode STDOUT, ":encoding(UTF-8)";

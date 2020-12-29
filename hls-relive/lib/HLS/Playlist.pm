@@ -35,7 +35,7 @@ sub from_file {
 
 	my $contents = read_file($location);
 	if(not $contents) {
-		croak "Reading input file failed: $@";
+		croak "Reading input file '$location' failed: $!";
 	}
 
 	return $class->from_string($contents);

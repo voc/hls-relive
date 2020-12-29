@@ -24,9 +24,11 @@ MEDIA_CONFERENCE_ID={{ slug }}
 # This maps Fahrplan room names to streams. For example, "Saal 1"
 # corresponds to stream "s1". Beware that the part of the key after the
 # underscore is case sensitive!
-{% for room in groups[0].rooms %}
-STREAM_{{ room.stream }}="{{ room.schedulename }}"{% endfor %}
 
+{% for group in groups %}
+{% for room in group.rooms %}
+STREAM_{{ room.stream }}="{{ room.schedulename }}"{% endfor %}
+{% endfor %}
 # Configure how many seconds before/after a talk should be recorded to
 # allow for slack.
 #

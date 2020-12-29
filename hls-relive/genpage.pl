@@ -124,7 +124,7 @@ sub remux_mp4 {
 	my $out = "$dir/muxed.mp4";
 
 	if(not -f $out or (mtime($in) > mtime($out))) {
-		system("ffmpeg -loglevel error -i '$in' -c:a copy -c:v copy -bsf:a aac_adtstoasc -movflags faststart -y '$out'");
+		system("ffmpeg -loglevel error -analyzeduration 40000000 -probesize 100000000 -i '$in' -c:a copy -c:v copy -bsf:a aac_adtstoasc -movflags faststart -y '$out'");
 	}
 
 	$event->{mp4} = $url_prefix . $out;

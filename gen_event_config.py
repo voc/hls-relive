@@ -40,7 +40,7 @@ if conference is None:
     print("Error – unknown conference: " + args.slug)
     exit(1)
 
-print(conference)
+#print(conference)
 
 if 'schedule' not in conference or conference['schedule'] is None:
     print("Warning: Schedule URL is empty!");
