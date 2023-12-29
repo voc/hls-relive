@@ -86,6 +86,14 @@ object looks like this:
 ensures that only events which have at least one recording on media.ccc.de are
 marked as *released*.
 
+### manually-regen-playlist.sh
+
+On rare occasions ffmpeg might crash or otherwise fail to write a correct index.m3u8
+for a specific talk. This script generates a new playlist from the snippets in a
+recordings directory.
+
+Example Usage: `./manually-regen-playlist.sh /video/relive/37c3/11937`
+
 ### Cron jobs
 
 There are three cron jobs:
