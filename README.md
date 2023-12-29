@@ -120,3 +120,12 @@ The following steps are necessary to set up ReLive for a new conference:
   - update the configuration file appropriately
   - launch the recording scheduler: `./launcher.sh projectname`
     You'll probably want to do that in a screen session.
+    
+    
+ Installation
+ ------------
+ 
+ If you want to deploy this repo to a new host, use following steps
+   - `ansible-playbook -i cdn -l live.alb.c3voc.de --tags relive relays.yml`
+   - install perl depenencies
+   - …
