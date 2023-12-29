@@ -51,7 +51,9 @@ my $postrecord = $config->{POSTRECORD} // 900;
 my $stream_map;
 foreach my $k (keys %$config) {
 	if($k =~ /^STREAM_(.*)/) {
-		$stream_map->{$config->{$k}} = $1;
+		my $stream = $1;
+		$stream =~ s/_/-/g;
+		$stream_map->{$config->{$k}} = $stream;
 	}
 }
 
