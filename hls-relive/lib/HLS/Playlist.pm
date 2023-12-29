@@ -90,7 +90,7 @@ sub parse {
 			$self->add_discontinuity;
 		} elsif($line =~ /^#EXT-X-VERSION/) {
 		} elsif($line =~ /^#.*/) {
-			carp "Unknown tag '$line'";
+#			carp "Unknown tag '$line'";
 		} else {
 			$self->add_segment($duration, $title, $line);
 		}
