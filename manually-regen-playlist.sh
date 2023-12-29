@@ -26,6 +26,10 @@ EOF
 for i in $(seq 1 "${maxseg}"); do
 	echo "Segment $i / ${maxseg}..." >&2
 	segment="$(echo *"-$i.ts")"
+	if [ "$(stat -c '%s' "${segment}")" = "0" ]; then
+		echo "Segment is empty, skipping..." >&2
+		continue
+	fi
 	length="$(ffprobe -hide_banner -print_format json -show_streams "${segment}" 2>/dev/null | jq '.streams[0].duration' | cut -d'"' -f2)"
 	if [ ! "${length}" = "null" ]; then
 		echo "#EXTINF:${length},"
@@ -35,6 +39,7 @@ done
 echo "#EXT-X-ENDLIST"
 ) > "${tmpfile}"
 
-mv "${tmpfile}" "${1}/index.m3u8"
+cat "${tmpfile}" > "${1}/index.m3u8"
+rm "${tmpfile}"
 echo "Done!"
 
