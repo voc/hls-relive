@@ -35,6 +35,9 @@ while true
 do
 	case $RELIVE_RECORDING_MODE in
 		hls)
+			./record_hls.sh "${ICEDIST_URL}/${STREAM}/native_${RELIVE_RESOLUTION}.m3u8" $RECORDING_DIR
+                        ;;
+		hls_local)
 			perl ./record.pl $HLS_DIR "${STREAM}_native_${RELIVE_RESOLUTION}.m3u8" $RECORDING_DIR
 			;;
 		icedist)
