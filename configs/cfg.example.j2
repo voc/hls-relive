@@ -38,5 +38,9 @@ STREAM_{{ room.stream }}="{{ room.schedulename }}"{% endfor %}
 #POSTRECORD=900
 SCRUB_THUMBS=1
 
-RELIVE_RECORDING_MODE=icedist
-ICEDIST_URL=http://live.ber.c3voc.de:7999
+
+RELIVE_RECORDING_MODE=hls
+ICEDIST_URL=http://cdn.c3voc.de/hls
+
+#RELIVE_RECORDING_MODE=icedist
+#ICEDIST_URL=http://ingest.c3voc.de:8000

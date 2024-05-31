@@ -98,7 +98,7 @@ sub make_thumb {
 
 	$event->{thumbnail} = $url_prefix . $thumb_path;
 
-	if (-f "$dir/thumb.jpg" and (mtime("$dir/index.m3u8") < mtime("$dir/thumb.jpg"))) {
+	if (-f "$dir/thumb.jpg" and -f "$dir/index.m3u8" and (mtime("$dir/index.m3u8") < mtime("$dir/thumb.jpg"))) {
 		return;
 	}
 
@@ -124,7 +124,7 @@ sub remux_mp4 {
 	my $out = "$dir/muxed.mp4";
 
 	if(not -f $out or (mtime($in) > mtime($out))) {
-		system("ffmpeg -loglevel error -analyzeduration 40000000 -probesize 100000000 -i '$in' -c:a copy -c:v copy -bsf:a aac_adtstoasc -movflags faststart -y '$out'");
+		system("ffmpeg -loglevel error -analyzeduration 40000000 -probesize 100000000 -i '$in' -map 0:v:0 -map 0:a -c:a copy -c:v copy -bsf:a aac_adtstoasc -movflags faststart -y '$out'");
 	}
 
 	$event->{mp4} = $url_prefix . $out;
@@ -200,6 +200,7 @@ while(my $id = readdir $dh) {
 		$event->{status} = $pl->{complete} ? 'recorded' : 'live';
 
 		$event->{playlist} = $url_prefix . "$id/index.m3u8";
+
 	}
 
 	my $frontend_url = $released->{$fev->{guid} // ""};
@@ -208,16 +209,18 @@ while(my $id = readdir $dh) {
 		$event->{release_url} = $frontend_url;
 	}
 
+
 	if($event->{status} ne "not_running") {
 		make_thumb($event);
 	}
 
+
 	if($event->{status} eq "recorded") {
 		remux_mp4($event);
 
-		if($config->{SCRUB_THUMBS}) {
-			make_sprites($event);
-		}
+		#		if($config->{SCRUB_THUMBS}) {
+		#	make_sprites($event);
+		#}
 	}
 
 	$event->{duration} = age_span($id);

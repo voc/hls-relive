@@ -40,6 +40,10 @@ do
 		hls_local)
 			perl ./record.pl $HLS_DIR "${STREAM}_native_${RELIVE_RESOLUTION}.m3u8" $RECORDING_DIR
 			;;
+		hls_external)
+			./record_hls.sh "${ICEDIST_URL}/${STREAM}.m3u8" $RECORDING_DIR
+                        ;;
+
 		icedist)
 			./record_icedist.sh "${ICEDIST_URL}/${STREAM}" $RECORDING_DIR
 			;;
