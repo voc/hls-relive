@@ -28,9 +28,12 @@ sub get_json {
 sub count_recordings {
 	my ($event) = @_;
 
+	say $event->{url};
 	my $event_data = get_json($event->{url});
 
+
 	if(defined($event_data) and defined($event_data->{recordings})) {
+		say $event_data
 		return scalar(@{$event_data->{recordings}});
 	} else {
 		return 0;
@@ -63,9 +66,9 @@ foreach my $event (@$events) {
 	my $recordings = count_recordings($event);
 	if($recordings > 0) {
 		$released_events->{$guid} = $event->{frontend_link};
-		say "ok ($recordings)";
+		say " ok ($recordings)";
 	} else {
-		say "not ok";
+		say " not ok ($recordings)";
 	}
 }
 
