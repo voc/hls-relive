@@ -33,7 +33,6 @@ sub count_recordings {
 
 
 	if(defined($event_data) and defined($event_data->{recordings})) {
-		say $event_data
 		return scalar(@{$event_data->{recordings}});
 	} else {
 		return 0;
